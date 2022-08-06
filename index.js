@@ -61,7 +61,7 @@ async function run() {
 
     })
 
-    // Task 3 Create a Get all Recipes Endpoint /recipes
+    // Task 3 Create a Get all Recipes Endpoint /recipes & search by title
     app.get('/recipes', async function (req, res) {
 
         let criteria = {}
@@ -73,21 +73,33 @@ async function run() {
                 '$options': 'i'
             }
         }
-
-        if (req.query.min_prep_time) {
-            criteria.prep_time = {
-                '$gte': parseInt(req.query.min_prep_time)
+        // get by cost
+        if (req.query.cost) {
+            criteria.cost = {
+                '$lte': parseInt(req.query.cost)
             }
 
         }
+        // get recipe by ingredients
+        if (req.query.ingredients) {
+
+            criteria.ingredients = {
+                '$regex': req.query.ingredients,
+                '$options': 'i'
+            }
+        }
+        console.log(criteria)
 
         const recipes = await db.collection('recipes-api').find(criteria, {
 
             'projection': {
 
                 'title': 1,
-
-                'prep_time': 1
+                'ingredients':1,
+                'prep_time': 1,
+                'cook_time': 1,
+                'total_time':1,
+                'cost':1 
             }
 
 
@@ -109,7 +121,11 @@ async function run() {
             "$set": {
                 'title': req.body.title ? req.body.title : recipes.title,
                 'ingredients': req.body.ingredients ? req.body.ingredients : recipes.ingredients,
-                'prep_time': req.body.prep_time ? req.body.prep_time : recipes.prep_time
+                'prep_time': req.body.prep_time ? req.body.prep_time : recipes.prep_time,
+                "cook_time": req.body.cook_time ? req.body.cook_time : recipes.cook_time,
+                "total_time": req.body.total_time ? req.body.total_time : recipes.total_time,
+                "servings": req.body.servings ? req.body.servings : recipes.servings,
+                "cost": req.body.cost ? req.body.cost : recipes.cost
             }
         })
 
@@ -183,6 +199,8 @@ async function run() {
         })
 
     })
+
+   
 
 
 }
