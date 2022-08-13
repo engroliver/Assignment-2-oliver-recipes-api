@@ -23,16 +23,50 @@ app.use(cors());
 
 const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.DB_NAME;
+const TOKEN_SECRET = process.env.TOKEN_SECRET
 
-function generateAccesToken(username,email){
+// jsonweb token
+function generateAccesToken(id,username){
 
     return jwt.sign({
+        'id':id,
         'username':username,
-        'email':email
-    },"Lk7Q5GZll66SY7YRBjhZUPwF1XnCMYhY",{
+    
+     
+    },TOKEN_SECRET,{
         'expiresIn':'1y'
 
     })
+}
+// Middleware
+function validateJWT(req,res,next){
+
+    if (req.headers.authorization) {
+        const headers = req.headers.authorization;
+        const token = headers.split(" ")[1];
+        jwt.verify(token, TOKEN_SECRET, function (err, tokenData) {
+            if (err) {
+                res.status(403);
+                res.json({
+                    'error': "Please Provide Valid TOKEN to access"
+                })
+                return;
+            }
+            req.accounts = tokenData;
+            console.log(tokenData)
+         next();
+
+        })
+    } else {
+
+        res.status(403);
+        res.json({
+            'error': "Please Provide Access Token"
+        })
+
+    }
+
+
 }
 
 
@@ -55,11 +89,13 @@ async function run() {
 
 
     // Task 2: Create a Add Recipe Endpoint
-    app.post('/recipes/add', async function (req, res) {
+    app.post('/recipes/add',validateJWT, async function (req, res) {
         await db.collection('recipes-api').insertOne({
 
             "title": req.body.title,
             "ingredients": req.body.ingredients,
+            "instructions":req.body.instructions,
+            "nutrition_facts":req.body.nutrition_facts,
             "prep_time": req.body.prep_time,
             "cook_time": req.body.cook_time,
             "total_time": req.body.total_time,
@@ -76,7 +112,7 @@ async function run() {
     })
 
     // Task 3 Create a Get all Recipes Endpoint /recipes & search by title
-    app.get('/recipes', async function (req, res) {
+    app.get('/recipes', validateJWT, async function (req, res) {
 
         try{
 
@@ -96,6 +132,15 @@ async function run() {
                 }
 
             }
+            //  get by neutritions
+            if (req.query.nutrition_facts) {
+                criteria.nutrition_facts = {
+                    '$regex': req.query.nutrition_facts,
+                    '$options': 'i'
+                }
+
+            }
+
             // get recipe by ingredients
             if (req.query.ingredients) {
 
@@ -112,6 +157,8 @@ async function run() {
 
                     'title': 1,
                     'ingredients': 1,
+                    'instructuins':1,
+                    'nutrition_facts':1,
                     'prep_time': 1,
                     'cook_time': 1,
                     'total_time': 1,
@@ -136,7 +183,7 @@ async function run() {
     })
 
     // Task 4 Create a Update Recipe Endpoint The URL for the endpoint should be /recipes/<recipeId>
-    app.put('/recipes/:recipeId', async function (req, res) {
+    app.put('/recipes/:recipeId', validateJWT, async function (req, res) {
         try {
 
             const recipes = await db.collection('recipes-api').findOne({
@@ -149,6 +196,8 @@ async function run() {
                 "$set": {
                     'title': req.body.title ? req.body.title : recipes.title,
                     'ingredients': req.body.ingredients ? req.body.ingredients : recipes.ingredients,
+                    "instructions": req.body.instructions ? req.body.instructions : recipes.instructions,
+                    "nutrition_facts": req.body.nutrition_facts ? req.body.nutrition_facts : recipes.nutrition_facts,
                     'prep_time': req.body.prep_time ? req.body.prep_time : recipes.prep_time,
                     "cook_time": req.body.cook_time ? req.body.cook_time : recipes.cook_time,
                     "total_time": req.body.total_time ? req.body.total_time : recipes.total_time,
@@ -176,7 +225,7 @@ async function run() {
     })
 
     // Task 5: Create a Delete Recipe Endpoint /recipes/<recipeId>
-    app.delete('/recipes/:recipeId', async function (req, res) {
+    app.delete('/recipes/:recipeId', validateJWT, async function (req, res) {
         await db.collection('recipes-api').deleteOne({
             '_id': ObjectId(req.params.recipeId)
         })
@@ -186,7 +235,7 @@ async function run() {
     })
 
     // Task 6: Create an endpoint to add a review to a recipe Endpoint recipes/<recipeId>/reviews 
-    app.post('/recipes/:recipeId/reviews', async function (req, res) {
+    app.post('/recipes/:recipeId/reviews', validateJWT, async function (req, res) {
         const results = await db.collection('recipes-api').updateOne({
             _id: ObjectId(req.params.recipeId)
         }, {
@@ -210,7 +259,7 @@ async function run() {
 
     // Task 7: Get recipe details
 
-    app.get('/recipes/:recipeId', async function (req, res) {
+    app.get('/recipes/:recipeId', validateJWT, async function (req, res) {
 
         try {
 
@@ -234,7 +283,7 @@ async function run() {
 
     // Task 8: Update a review for a recipe End Point recipes/<recipeId>/reviews/<reviewId>
 
-    app.put('/recipes/:recipeId/reviews/:reviewId', async function (req, res) {
+    app.put('/recipes/:recipeId/reviews/:reviewId', validateJWT, async function (req, res) {
 
         try {
             const results = await db.collection('recipes-api').updateOne({
@@ -289,12 +338,12 @@ async function run() {
     // login
     app.post('/login', async function (req,res){
 
-        const acount = await db.collection('accounts').findOne({
+        const account = await db.collection('accounts').findOne({
             'username':req.body.username,
             'password':req.body.password
         })
-        if (acount){
-            let token = generateAccesToken(acount.username,acount.password);
+        if (account){
+            let token = generateAccesToken(account._id,account.username,account.email_add);
             res.json({
                 'accessToken':token
             })
@@ -307,7 +356,23 @@ async function run() {
 
     })
 
+    // Profile of the user
+    
+    app.get('/account/:accountID',validateJWT, async function (req, res){
+    
+            res.json({
+                'id': req.accounts.id,
+                'username':req.accounts.username,
+                'message':'Profile page'
 
+            })
+
+            
+ 
+        
+
+
+    })
 
 
 }
