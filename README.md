@@ -50,10 +50,10 @@ To provide an convenient way to discover, find and monitor their callorie intake
 
 
 ### API DOCUMENTATION
-
+------------ | -------------
 Title| Retrieve all recipes
 Method| GET
 Endpoint Path | /recipes
 Body| N/A
 Parameters| Provide JSON  web token under authorization and bearer
-Expected Response | <img src='images/result.JPG' style="display:block height=250px width=250px">
+Expected Response | <img src='images/result.JPG' style="display:block">
