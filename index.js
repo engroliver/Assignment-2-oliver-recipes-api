@@ -157,7 +157,7 @@ async function run() {
 
                     'title': 1,
                     'ingredients': 1,
-                    'instructuins':1,
+                    'instructions':1,
                     'nutrition_facts':1,
                     'prep_time': 1,
                     'cook_time': 1,
