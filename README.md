@@ -44,8 +44,16 @@ To provide an convenient way to discover, find and monitor their callorie intake
 
 * require JSON web token for every data
 
-### SAMPLE MONGO DOCUMENTS
+### SAMPLE MONGO DOCUMENT
 
 <img src='images/data.JPG' style="display:block">
 
 
+### API DOCUMENTATION
+
+Title| Retrieve all recipes
+Method| GET
+Endpoint Path | /recipes
+Body| N/A
+Parameters| Provide JSON  web token under authorization and bearer
+Expected Response | <img src='images/result.JPG' style="display:block height=250px width=250px">
