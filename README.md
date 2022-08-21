@@ -51,9 +51,8 @@ To provide an convenient way to discover, find and monitor their callorie intake
 
 ### API DOCUMENTATION
 
-             | 
+ Title| Retrieve all recipes           
 ------------ | -------------
-Title| Retrieve all recipes
 Method| GET
 Endpoint Path | /recipes
 Body| N/A
