@@ -92,6 +92,7 @@ async function run() {
     app.post('/recipes/add',validateJWT, async function (req, res) {
         await db.collection('recipes-api').insertOne({
 
+               
             "title": req.body.title,
             "ingredients": req.body.ingredients,
             "instructions":req.body.instructions,

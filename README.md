@@ -103,7 +103,7 @@ Expected Response|<img src='images/nutrition.JPG' style="display:block">
 Title| Update Recipe           
 ------------ | -------------
 Method| PUT
-Endpoint Path | '/recipes/:recipeId'
+Endpoint Path | /recipes/:recipeId'
 Body| (you can put only the specific data to edit) <img src='images/update.JPG' style="display:block">
 Parameters |  <ul><li> Provide JSON  web token under authorization and check bearer</li> <br><li>recipe_id: the unique ID of the recipe to update </li><br><li>title(string) : The new title of recipe</li> <br> <li>ingredients(array):  The new list of ingredients</li><br><li>instructions(array): The new instruction for preparation and cooking</li><br><li>nutrition_facts(string):The new Neutritions content of the food</li><br><li>prep_time(string): The new preparation time </li><br><li>cook_time(string): The cooking time</li><br><li>total_time(string):The new total time to make the food</li><br><li>servings(integer): The new servings as per ingredients indecated</li><br><li>cost(integer): The new cost of food</li> </ul>
 Expected Response|<img src='images/upresponse.JPG' style="display:block">
@@ -111,9 +111,34 @@ Expected Response|<img src='images/upresponse.JPG' style="display:block">
  Title| Delete recipes           
 ------------ | -------------
 Method| DELETE
-Endpoint Path | '/recipes/:recipeId'
+Endpoint Path | /recipes/:recipeId'
 Body| N/A
 Parameters| <ul><li>Provide JSON  web token under authorization and check bearer</li><br><li>recipe_id: the unique ID of the recipe to delete </li></ul>
-Expected Response|"status":200 "data deleted successfully"}
+Expected Response|<img src='images/deleteres.JPG' style="display:block">
+
+ Title| Add review to recipe           
+------------ | -------------
+Method| POST
+Endpoint Path | /recipes/:recipeId/reviews
+Body| <img src='images/reviewadd.JPG' style="display:block">
+Parameters| <ul><li>Provide JSON  web token under authorization and check bearer</li><br><li>recipe_id: the unique ID of the recipe to review </li><br><li>email_add(string) : The email add of the reviewee</li><br><li>content(string) : The comment of the reviewee</li><br><li>rating(integer) : the rating of reviewee out of 10</li>
+</ul>
+Expected Response|<img src='images/reviewresult.JPG' style="display:block">
+
+ Title| Update review to recipe           
+------------ | -------------
+Method| PUT
+Endpoint Path | /recipes/:recipeId/reviews/:reviewId'
+Body| <img src='images/upreview.JPG' style="display:block">
+Parameters| <ul><li>Provide JSON  web token under authorization and check bearer</li><br><li>recipe_id: the unique ID of the recipe to update the review </li><br><li>review_id: the unique ID of the review </li><br><li>email_add(string) : The email add of the reviewee</li><br><li>content(string) : The update comment of the reviewee</li><br><li>rating(integer) : the update rating of reviewee out of 10</li></ul>
+Expected Response|<img src='images/upresreview.JPG' style="display:block">
+
+Title| Get recipe detail by ID          
+------------ | -------------
+Method| PUT
+Endpoint Path | /recipes/:recipeId
+Body| N/A
+Parameters| <ul><li>Provide JSON  web token under authorization and check bearer</li><br><li>recipe_id: the unique ID of the recipe to see detail</li></ul>
+Expected Response|<img src='images/recipeID.JPG' style="display:block">
 
       
