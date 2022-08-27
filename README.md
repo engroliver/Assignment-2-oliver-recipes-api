@@ -121,9 +121,8 @@ Expected Response|<img src='images/deleteres.JPG' style="display:block">
 Method| POST
 Endpoint Path | /recipes/:recipeId/reviews
 Body| <img src='images/reviewadd.JPG' style="display:block">
-Parameters| <ul><li>Provide JSON  web token under authorization and check bearer</li><br><li>recipe_id: the unique ID of the recipe to review </li><br><li>email_add(string) : The email add of the reviewee</li><br><li>content(string) : The comment of the reviewee</li><br><li>rating(integer) : the rating of reviewee out of 10</li>
-</ul>
-Expected Response|<img src='images/reviewresult.JPG' style="display:block">
+Parameters| <ul><li>Provide JSON  web token under authorization and check bearer</li><br><li>recipe_id: the unique ID of the recipe to review </li><br><li>email_add(string) : The email add of the reviewee</li><br><li>content(string) : The comment of the reviewee</li><br><li>rating(integer) : the rating of reviewee out of 10</li></ul>
+Expected Response| <img src='images/reviewresult.JPG' style="display:block">
 
  Title| Update review to recipe           
 ------------ | -------------
@@ -141,4 +140,19 @@ Body| N/A
 Parameters| <ul><li>Provide JSON  web token under authorization and check bearer</li><br><li>recipe_id: the unique ID of the recipe to see detail</li></ul>
 Expected Response|<img src='images/recipeID.JPG' style="display:block">
 
+Title| Sign up for Account          
+------------ | -------------
+Method| POST
+Endpoint Path | /register
+Body| <img src='images/regbody.JPG' style="display:block">
+Parameters| <ul><li> email(string) : email add of the user</li> <br><li> name(string) : name of the user</li> <br><li> lastname(string) : last name  of the user</li> <br><li> birthday(string) : birthday of the user</li> <br><li> username(string) : username of the user</li> <br><li>password(string):password of the user </ul>
+Expected Response|<img src='images/reg.JPG' style="display:block">
+
+Title| Login to get Json web token          
+------------ | -------------
+Method| POST
+Endpoint Path | /login
+Body| <img src='images/login.JPG' style="display:block">
+Parameters| <ul><li> username: username of the user</li> <br><li> password(string) : password of the user</li>  </ul>
+Expected Response|<img src='images/loginres.JPG' style="display:block">
       
