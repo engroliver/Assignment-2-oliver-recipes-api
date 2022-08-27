@@ -64,12 +64,11 @@ Title| Add Recipe
 Method| Post
 Endpoint Path | /recipes/add
 Body| <img src='images/body.JPG' style="display:block">
-Parameters |  - Provide JSON  web token under authorization and bearer <br>  title(string) : The title of recipe <br> ingredients(array):  The list of ingredients<br>instructions(array): The instruction for preparation and cooking<br>nutrition_facts(string):The Neutritions content of the recipe<br>prep_time(string): The preparation time <br>cook_time(string): The cooking time<br>total_time(string):The total time to make the food<br>servings(integer): The servings as per ingredients indecated<br>cost(integer): The cost of food 
+Parameters |  - Provide JSON  web token under authorization and bearer <br>  title(string) : The title of recipe <br> ingredients(array):  The list of ingredients<br>instructions(array): The instruction for preparation and cooking<br>nutrition_facts(string):The Neutritions content of the food<br>prep_time(string): The preparation time <br>cook_time(string): The cooking time<br>total_time(string):The total time to make the food<br>servings(integer): The servings as per ingredients indecated<br>cost(integer): The cost of food 
  
-
-Expected Response | {
-                         "status":200
-                          "message": "Recipe Added"
+Expected Response | {<br>
+                        "status":200<br>
+                        "message": "Recipe Added"<br>
                     }
 
 
