@@ -84,6 +84,13 @@ Body| N/A
 Parameters |  Provide JSON  web token under authorization and check bearer 
 Expected Response|displays less than or equal the desired cost searched <img src='images/cost.JPG' style="display:block">
 
+Title| Get recipe by available ingredients           
+------------ | -------------
+Method| GET
+Endpoint Path | /recipes?ingredients=coconut milk&butter(input available ingredients ex.coconut milk&butter)
+Body| N/A
+Parameters |  Provide JSON  web token under authorization and check bearer 
+Expected Response|displays less than or equal the desired cost searched <img src='images/ingredients.JPG' style="display:block">
 
 
       
