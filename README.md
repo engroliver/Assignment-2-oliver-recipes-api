@@ -79,3 +79,17 @@ Expected Response | {
                   |       "status":200
                   |        "message": "Recipe Added"
                   |       }
+
+
++---------------+------------------------------------------------------------+
+| Title        | Add Recipe                                                  |
++===============+============================================================+
+| Method        | Post                                                       |
++---------------+------------------------------------------------------------+
+| Body          | <img src='images/body.JPG' style="display:block">          |
++---------------+------------------------------------------------------------+ 
+| Oranges       | - Provide JSON  web token under authorization and bearer   |
+|               | - title(string) : The title of recipe                      |
+                | - ingredients(array):  The list of ingredients             |   
++---------------+-------------------------------------------------------------+  
+      
