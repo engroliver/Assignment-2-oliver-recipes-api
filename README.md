@@ -74,6 +74,7 @@ Parameters |  * Provide JSON  web token under authorization and bearer
            |  * total_time(string):The total time to make the food
            |  * servings(integer): The servings as per ingredients indecated
            |  * cost(integer): The cost of food 
+                <ul><li>item1</li
 
 Expected Response | {
                   |       "status":200
