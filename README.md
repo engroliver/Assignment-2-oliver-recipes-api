@@ -155,4 +155,90 @@ Endpoint Path | /login
 Body| <img src='images/login.JPG' style="display:block">
 Parameters| <ul><li> username: username of the user</li> <br><li> password(string) : password of the user</li>  </ul>
 Expected Response|<img src='images/loginres.JPG' style="display:block">
-      
+
+### TESTING
+
+ Method| GET         
+------------ | -------------
+Endpoint Path | /recipes
+Body| N/A
+Expected Response | <img src='images/result.JPG' style="display:block">
+
+Method| POST           
+------------ | -------------
+Endpoint Path | /recipes/add
+Body| <img src='images/body.JPG' style="display:block">
+Expected Response|"status":200 {"message": "Recipe Added"}
+
+
+Method| GET          
+------------ | -------------
+Endpoint Path | /recipes?title=pork
+Body| N/A
+Expected Response| <img src='images/result.JPG' style="display:block">
+
+Method| GET          
+------------ | -------------
+Endpoint Path | /recipes?cost=500
+Body| N/A
+Expected Response|displays less than or equal the desired cost searched <img src='images/cost.JPG' style="display:block">
+
+Method| GET          
+------------ | -------------
+Endpoint Path | /recipes?ingredients=coconut milk&butter
+Body| N/A
+Expected Response|<img src='images/ingredients.JPG' style="display:block">
+
+Method| GET         
+------------ | -------------
+Endpoint Path | /recipes?nutrition_facts=Calories: 76.0kcal(ex.Calories: 76.0kcal)
+Body| N/A
+Expected Response|<img src='images/nutrition.JPG' style="display:block">
+
+Method| PUT        
+------------ | -------------
+Endpoint Path | /recipes/:recipeId'
+Body| (you can put only the specific data to edit) <img src='images/update.JPG' style="display:block">
+Expected Response|<img src='images/upresponse.JPG' style="display:block">
+
+ Method| DELETE         
+------------ | -------------
+Endpoint Path | /recipes/:recipeId'
+Body| N/A
+Expected Response|<img src='images/deleteres.JPG' style="display:block">
+
+ Method| POST          
+------------ | -------------
+Endpoint Path | /recipes/:recipeId/reviews
+Body| <img src='images/reviewadd.JPG' style="display:block">
+Expected Response| <img src='images/reviewresult.JPG' style="display:block">
+
+ Method| PUT         
+------------ | -------------
+Endpoint Path | /recipes/:recipeId/reviews/:reviewId'
+Body| <img src='images/upreview.JPG' style="display:block">
+Expected Response|<img src='images/upresreview.JPG' style="display:block">
+
+Method| PUT         
+------------ | -------------
+Endpoint Path | /recipes/:recipeId
+Body| N/A
+Expected Response|<img src='images/recipeID.JPG' style="display:block">
+
+Methid| POST         
+------------ | -------------
+Endpoint Path | /register
+Body| <img src='images/regbody.JPG' style="display:block">
+Expected Response|<img src='images/reg.JPG' style="display:block">
+
+Method| POST     
+------------ | -------------
+Endpoint Path | /login
+Body| <img src='images/login.JPG' style="display:block">
+Expected Response|<img src='images/loginres.JPG' style="display:block">
+
+
+### CREDITS
+1. https://panlasangpinoy.com
+
+    -Recipe Source for the project
