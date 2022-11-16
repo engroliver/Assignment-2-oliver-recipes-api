@@ -21,6 +21,9 @@ app.use(express.json());
 // cors 
 app.use(cors());
 
+// date
+parse = require('date-fns/parse')
+
 const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.DB_NAME;
 const TOKEN_SECRET = process.env.TOKEN_SECRET
@@ -89,11 +92,15 @@ async function run() {
 
 
     // Task 2: Create a Add Recipe Endpoint
-    app.post('/recipes/add',validateJWT, async function (req, res) {
+    app.post('/recipes/add', async function (req, res) {
+
+       try{ 
         await db.collection('recipes-api').insertOne({
 
-               
+                      
             "title": req.body.title,
+            "description": req.body.description,
+            "course":req.body.course,
             "ingredients": req.body.ingredients,
             "instructions":req.body.instructions,
             "nutrition_facts":req.body.nutrition_facts,
@@ -102,18 +109,26 @@ async function run() {
             "total_time": req.body.total_time,
             "servings": req.body.servings,
             "cost": req.body.cost,
-
+            name: req.body.name,
+            url: req.body.url
 
 
         })
         res.json({
             'message': 'Recipe Added'
         })
+    } catch (e){
+        console.log(e)
+        res.status(500);
+        res.json({
+            'error':"Internal Server Error"
+        })
+    }
 
     })
 
     // Task 3 Create a Get all Recipes Endpoint /recipes & search by title
-    app.get('/recipes', validateJWT, async function (req, res) {
+    app.get('/recipes', async function (req, res) {
 
         try{
 
@@ -121,7 +136,7 @@ async function run() {
 
             if (req.query.title) {
 
-                criteria.title = {
+                criteria.title = {  
                     '$regex': req.query.title,
                     '$options': 'i'
                 }
@@ -130,6 +145,14 @@ async function run() {
             if (req.query.cost) {
                 criteria.cost = {
                     '$lte': parseInt(req.query.cost)
+                }
+
+            }
+            // get by course
+            if (req.query.course) {
+                criteria.course = {
+                    '$regex': req.query.course,
+                    '$options': 'i'
                 }
 
             }
@@ -157,13 +180,17 @@ async function run() {
                 'projection': {
 
                     'title': 1,
+                    'description':1,
+                    'course':1,
                     'ingredients': 1,
                     'instructions':1,
                     'nutrition_facts':1,
                     'prep_time': 1,
                     'cook_time': 1,
                     'total_time': 1,
-                    'cost': 1
+                    'cost': 1,
+                    'name': 1,
+                    'url': 1
                 }
 
 
@@ -184,7 +211,8 @@ async function run() {
     })
 
     // Task 4 Create a Update Recipe Endpoint The URL for the endpoint should be /recipes/<recipeId>
-    app.put('/recipes/:recipeId', validateJWT, async function (req, res) {
+    app.put('/recipes/:recipeId', async function (req, res) {
+      
         try {
 
             const recipes = await db.collection('recipes-api').findOne({
@@ -196,6 +224,8 @@ async function run() {
             }, {
                 "$set": {
                     'title': req.body.title ? req.body.title : recipes.title,
+                    'description': req.body.description ? req.body.description : recipes.description,
+                    'course': req.body.course ? req.body.course : recipes.course,
                     'ingredients': req.body.ingredients ? req.body.ingredients : recipes.ingredients,
                     "instructions": req.body.instructions ? req.body.instructions : recipes.instructions,
                     "nutrition_facts": req.body.nutrition_facts ? req.body.nutrition_facts : recipes.nutrition_facts,
@@ -203,7 +233,9 @@ async function run() {
                     "cook_time": req.body.cook_time ? req.body.cook_time : recipes.cook_time,
                     "total_time": req.body.total_time ? req.body.total_time : recipes.total_time,
                     "servings": req.body.servings ? req.body.servings : recipes.servings,
-                    "cost": req.body.cost ? req.body.cost : recipes.cost
+                    "cost": req.body.cost ? req.body.cost : recipes.cost,
+                    name: req.body.name ? req.body.name : recipes.name,
+                    url: req.body.url ? req.body.url : recipes.url
                 }
             })
 
@@ -226,7 +258,7 @@ async function run() {
     })
 
     // Task 5: Create a Delete Recipe Endpoint /recipes/<recipeId>
-    app.delete('/recipes/:recipeId', validateJWT, async function (req, res) {
+    app.delete('/recipes/:recipeId', async function (req, res) {
         await db.collection('recipes-api').deleteOne({
             '_id': ObjectId(req.params.recipeId)
         })
@@ -260,7 +292,7 @@ async function run() {
 
     // Task 7: Get recipe details
 
-    app.get('/recipes/:recipeId', validateJWT, async function (req, res) {
+    app.get('/recipes/:recipeId', async function (req, res) {
 
         try {
 
@@ -324,7 +356,7 @@ async function run() {
             "email":req.body.email,
             "name": req.body.name,
             "lastname":req.body.lastname,
-            "birthday":req.body.birthday,
+            "birthday":parse(req.body.birthday,'yyyy-mm-dd', new Date()),
             "username":req.body.username,
             "password":req.body.password,
 
@@ -338,16 +370,19 @@ async function run() {
     })
     // login
     app.post('/login', async function (req,res){
-
+            console.log(req.body)
         const account = await db.collection('accounts').findOne({
             'username':req.body.username,
             'password':req.body.password
         })
         if (account){
             let token = generateAccesToken(account._id,account.username,account.email_add);
-            res.json({
+            console.log(token)
+            
+            return res.json({
                 'accessToken':token
             })
+            
         }else {
             res.status(401)
             res.json({
